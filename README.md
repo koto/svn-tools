@@ -1,7 +1,8 @@
 In this repository there are various small command-line (Linux) scripts made to facilitate working with Subversion
 Following tools are currently present
 
-Autor: Krzysztof Kotowicz <kkotowicz at gmail dot com>
+Author: Krzysztof Kotowicz <kkotowicz at gmail dot com>
+
 License: MIT
 
 svn-grep
@@ -18,6 +19,7 @@ Usage
     svn-grep <string to search for> [output-dir] [working copy dir]
 
 `output-dir` defaults to `./report-SEARCH_TERM`
+
 `working copy dir` defaults to `.`
 
 Grepping the repository could take some time as all repository history must be transferred to client.
