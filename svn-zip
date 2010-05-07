@@ -1,0 +1,17 @@
+#!/bin/bash 
+# svn-zip
+# Author: Krzysztof Kotowicz <kkotowicz at gmail dot com>
+# License: MIT
+# URL: http://github.com/koto/svn-tools
+
+D=`pwd`
+if [ "$1" = "" ]; then
+    VER=`svnversion . -n | sed s/\:/_/`
+else
+    VER=$1
+fi
+PROJECT=`basename $D`
+BASE=/tmp/svnexport
+mkdir -p $BASE && svn up && svn export --force  . $BASE/$PROJECT && cd $BASE && zip -r $PROJECT-$VER.zip $PROJECT/ && mv $PROJECT-$VER.zip $D
+cd $D
+echo Exported to $PROJECT-$VER.zip

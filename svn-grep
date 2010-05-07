@@ -1,0 +1,39 @@
+#!/bin/bash
+# svn-grep
+# Author: Krzysztof Kotowicz <kkotowicz at gmail dot com>
+# License: MIT
+# URL: http://github.com/koto/svn-tools
+
+SEARCH=$1
+DESTDIR=${2-"report-$1"}
+WC=${3-"."}
+
+if [[ $SEARCH == "--help" || $SEARCH == "-h" || $SEARCH == "" ]]; then
+   echo "Generate report from Subversion working copy for all revisions"
+   echo "containing given string in log message"
+   echo ""
+   echo "Author: <kkotowicz at gmail dot com>"
+   echo ""
+   echo "Usage: `basename $0` <search string> [report-destination] [working-copy-dir]"
+   exit 1
+fi
+
+svn info $WC
+if [ $? -ne 0 ]; then
+    echo "Error, exiting"
+    exit $?
+fi
+if [ ! -d $DESTDIR ]
+then
+    echo "Creating $DESTDIR"
+    mkdir -p $DESTDIR
+fi
+echo "Getting revision info - searching '$SEARCH'..."
+for rev in `svn log $WC --xml | xmlstarlet sel -t -m "//logentry[contains(msg,'$SEARCH')]" -v "attribute::revision" -n `
+do
+  # fetch revision log and diff
+  echo "Processing revision $rev..."
+  svn diff -c $rev > $DESTDIR/$rev.diff
+  svn log -c $rev >> $DESTDIR/log
+done
+echo "Done."
