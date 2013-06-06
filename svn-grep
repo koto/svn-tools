@@ -29,7 +29,7 @@ then
     mkdir -p $DESTDIR
 fi
 echo "Getting revision info - searching '$SEARCH'..."
-for rev in `svn log $WC --xml | xmlstarlet sel -t -m "//logentry[contains(msg,'$SEARCH')]" -v "attribute::revision" -n `
+for rev in `svn log $WC --xml -r HEAD:1 | xmlstarlet sel -t -m "//logentry[contains(msg,'$SEARCH')]" -v "attribute::revision" -n `
 do
   # fetch revision log and diff
   echo "Processing revision $rev..."
