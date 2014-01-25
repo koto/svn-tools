@@ -33,7 +33,7 @@ for rev in `svn log $WC --xml -r HEAD:1 | xmlstarlet sel -t -m "//logentry[conta
 do
   # fetch revision log and diff
   echo "Processing revision $rev..."
-  svn diff -c $rev > $DESTDIR/$rev.diff
-  svn log -c $rev >> $DESTDIR/log
+  svn diff $WC -c $rev > $DESTDIR/$rev.diff
+  svn log $WC -c $rev >> $DESTDIR/log
 done
 echo "Done."
